@@ -1,0 +1,7 @@
+DB_USER=seu_usuario_sql
+DB_PASSWORD=sua_senha_sql
+DB_SERVER=localhost\SQLEXPRESS
+DB_NAME=SeuBancoDeDados
+PORT=3000
+ADMIN_PASSWORD=1234
+

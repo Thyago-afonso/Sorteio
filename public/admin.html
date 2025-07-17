@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+
+  <title>Admin - Sorteio</title>
+</head>
+<body>
+  <div id="login">
+    <h2>Área Restrita</h2>
+    <input type="password" id="senha" placeholder="Digite a senha" />
+    <button onclick="verificarSenha()">Entrar</button>
+    <p id="erro" style="color:red;"></p>
+  </div>
+
+  <div id="painelAdmin" style="display: none;">
+    <h1>Painel do Administrador</h1>
+
+    <h2>Participantes</h2>
+    <ul id="listaParticipantes">Carregando...</ul>
+<a href="/exportar-csv" download>
+    <button>📥 Baixar Participantes (CSV)</button>
+</a>
+
+
+    <h2>Sorteio</h2>
+    <button id="sortear">Sortear Participante</button>
+    <p id="resultadoSorteio"></p>
+  </div>
+
+  <script>
+    async function verificarSenha() {
+      const senha = document.getElementById('senha').value;
+      const erro = document.getElementById('erro');
+      try {
+        const res = await fetch('/auth-admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ senha })
+        });
+
+        if (res.ok) {
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('painelAdmin').style.display = 'block';
+          carregarParticipantes();
+        } else {
+          erro.textContent = 'Senha incorreta.';
+        }
+      } catch {
+        erro.textContent = 'Erro ao verificar senha.';
+      }
+    }
+
+    async function carregarParticipantes() {
+      const lista = document.getElementById('listaParticipantes');
+      try {
+        const res = await fetch('/participantes');
+        const participantes = await res.json();
+        lista.innerHTML = '';
+        if (participantes.length === 0) {
+          lista.innerHTML = '<li>Nenhum participante cadastrado.</li>';
+        } else {
+          participantes.forEach(p => {
+            const li = document.createElement('li');
+            li.textContent = `${p.Nome} - ${p.Telefone}`;
+            lista.appendChild(li);
+          });
+        }
+      } catch {
+        lista.innerHTML = '<li>Erro ao carregar participantes.</li>';
+      }
+    }
+
+    document.getElementById('sortear').addEventListener('click', async () => {
+      const resultado = document.getElementById('resultadoSorteio');
+      resultado.textContent = 'Sorteando...';
+      try {
+        const res = await fetch('/sorteio');
+        const sorteado = await res.json();
+        if (res.ok) {
+          resultado.textContent = `🎉 Sorteado: ${sorteado.Nome} (${sorteado.Telefone})`;
+        } else {
+          resultado.textContent = sorteado.error || 'Erro ao sortear.';
+        }
+      } catch {
+        resultado.textContent = 'Erro ao conectar com o servidor.';
+      }
+    });
+  </script>
+</body>
+</html>
