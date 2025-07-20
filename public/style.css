@@ -1,40 +1,92 @@
-body {
-  font-family: Arial, sans-serif;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #f9f9f9;
-}
-
-h1, h2 {
-  color: #333;
-}
-
-input, button {
-  padding: 8px;
-  margin: 5px 0;
-  width: 100%;
+/* Reset básico */
+* {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+body {
+  background-color: #0a0a0a;
+  color: #ffffff; /* Letras brancas */
+  padding: 30px;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Títulos */
+h1, h2, h3 {
+  color: #ffffff; /* Letras brancas */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Formulários e containers */
+form, #login, #painelAdmin {
+  background-color: #141414;
+  padding: 20px;
+  border: 2px solid #3c1361;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #3c1361aa;
+  margin-bottom: 30px;
+}
+
+/* Campos de texto e botões */
+input, button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+/* Inputs */
+input {
+  background-color: #1e1e1e;
+  color: #ffffff; /* Letras brancas */
+  border: 1px solid #444;
+}
+
+input::placeholder {
+  color: #aaa; /* Cinza para placeholder */
+}
+
+input:focus {
+  outline: none;
+  border-color: #a259ff;
+  box-shadow: 0 0 8px #a259ff88;
+}
+
+/* Botões */
 button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
+  background-color: transparent;
+  color: #ffffff; /* Letras brancas */
+  border: 2px solid #a259ff;
+  font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 0 10px #a259ff55;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #a259ff;
+  color: #fff;
+  box-shadow: 0 0 20px #a259ffaa;
 }
 
+/* Lista de participantes */
 ul {
-  background: #fff;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  list-style-type: none;
+  list-style: none;
+  margin-top: 15px;
+  padding-left: 0;
 }
 
-li {
-  margin-bottom: 0.5rem;
+ul li {
+  background-color: #1a1a1a;
+  margin-bottom: 8px;
+  padding: 10px;
+  color: #ffffff; /* Letras brancas */
+  border-left: 4px solid #a259ff;
 }
