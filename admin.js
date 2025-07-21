@@ -5,10 +5,11 @@ function verificarSenha() {
   const erro = document.getElementById('erro');
 
   fetch(URL_ADMIN, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ acao: 'verificarSenha', senha })
-  })
+  method: 'POST',
+  headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // importante!
+  body: JSON.stringify({ acao: 'verificarSenha', senha })
+})
+
     .then(res => res.json())
     .then(dados => {
       if (dados.autorizado) {
