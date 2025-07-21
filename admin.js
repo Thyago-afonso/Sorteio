@@ -4,11 +4,14 @@ function verificarSenha() {
   const senha = document.getElementById('senha').value;
   const erro = document.getElementById('erro');
 
-  fetch(URL_ADMIN, {
-  method: 'POST',
-  headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // importante!
-  body: JSON.stringify({ acao: 'verificarSenha', senha })
+fetch(URL_ADMIN, {
+  method: "POST",
+  headers: { "Content-Type": "text/plain;charset=utf-8" },
+  body: JSON.stringify({ acao: "verificarSenha", senha })
 })
+
+body: JSON.stringify({ acao: "listar" })
+
 
     .then(res => res.json())
     .then(dados => {
