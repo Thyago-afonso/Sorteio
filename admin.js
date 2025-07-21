@@ -1,36 +1,49 @@
-const SENHA_ADMIN = '2001Lima'; 
-const PLANILHA_ID = 'https://script.google.com/macros/s/AKfycbxJviyoxVzFs53mUKS7hVaOfbj_AW_UX0tmGGzX4aqf3TDmVIn_0C2IkSjglsdCqdBVtQ/exec ';
+const URL_ADMIN = 'https://script.google.com/macros/s/AKfycbxJviyoxVzFs53mUKS7hVaOfbj_AW_UX0tmGGzX4aqf3TDmVIn_0C2IkSjglsdCqdBVtQ/exec';
 
 function verificarSenha() {
   const senha = document.getElementById('senha').value;
-  if (senha === SENHA_ADMIN) {
-    document.getElementById('login').style.display = 'none';
-    document.getElementById('painelAdmin').style.display = 'block';
-    carregarLista();
-  } else {
-    document.getElementById('erro').textContent = 'Senha incorreta.';
-  }
+  const erro = document.getElementById('erro');
+
+  fetch(URL_ADMIN, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ acao: 'verificarSenha', senha })
+  })
+    .then(res => res.json())
+    .then(dados => {
+      if (dados.autorizado) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('painelAdmin').style.display = 'block';
+        carregarLista();
+      } else {
+        erro.textContent = 'Senha incorreta.';
+      }
+    })
+    .catch(() => {
+      erro.textContent = 'Erro ao verificar senha.';
+    });
 }
 
-async function carregarLista() {
+function carregarLista() {
   const lista = document.getElementById('listaParticipantes');
-  try {
-    const res = await fetch(`https://docs.google.com/spreadsheets/d/${PLANILHA_ID}/gviz/tq?tqx=out:json`);
-    const texto = await res.text();
-    const json = JSON.parse(texto.substring(47).slice(0, -2));
-    const linhas = json.table.rows;
 
-    lista.innerHTML = '';
-    linhas.slice(1).forEach(l => {
-      const nome = l.c[0]?.v || '';
-      const tel = l.c[1]?.v || '';
-      const li = document.createElement('li');
-      li.textContent = `${nome} - ${tel}`;
-      lista.appendChild(li);
+  fetch(URL_ADMIN, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ acao: 'listar' })
+  })
+    .then(res => res.json())
+    .then(dados => {
+      lista.innerHTML = '';
+      dados.participantes.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = `${p.nome} - ${p.telefone}`;
+        lista.appendChild(li);
+      });
+    })
+    .catch(() => {
+      lista.innerHTML = '<li>Erro ao carregar participantes.</li>';
     });
-  } catch {
-    lista.innerHTML = '<li>Erro ao carregar participantes.</li>';
-  }
 }
 
 function sortear() {

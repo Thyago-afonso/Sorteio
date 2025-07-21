@@ -1,4 +1,4 @@
-const URL_PLANILHA = 'https://script.google.com/macros/s/SEU_WEBHOOK_ID/exec';
+const URL_PLANILHA = 'https://script.google.com/macros/library/d/1x6joCOuxt_wHge6Vwxa9yvrtnZB8ynQ_-5OgUb26jSmwCXleb3wcA-6c/1';
 
 document.getElementById("form-sorteio").addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -19,9 +19,10 @@ document.getElementById("form-sorteio").addEventListener("submit", async functio
     });
 
     const data = await res.json();
-    msg.textContent = data.message || data.error;
+    msg.textContent = data.message || data.error || "Participação registrada!";
     if (res.ok) this.reset();
-  } catch {
+  } catch (error) {
     msg.textContent = "Erro ao enviar.";
+    console.error(error);
   }
 });
